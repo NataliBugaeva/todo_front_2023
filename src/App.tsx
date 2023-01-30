@@ -2,55 +2,32 @@ import React from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
+import AddItem from "./features/addItem/addItem";
+import {addNewTodolist as addNewTodolistFromTodoSlice} from './features/todos/todoSlice';
+import {addNewTodolist as addNewTodolistFromTaskSlice} from './features/tasks/tasksSlice';
+import {useAppDispatch, useAppSelector} from "./app/hooks";
+import {v1} from "uuid";
+import Todolist from "./features/todos/todolist";
 
 function App() {
+
+    const dispatch = useAppDispatch();
+    const todolists = useAppSelector(state => state.todos.todos);
+
+
+    const addNewTodolist = (title: string) => {
+        let todoId = v1();
+        dispatch(addNewTodolistFromTodoSlice({todoId, title}));
+        dispatch(addNewTodolistFromTaskSlice({todoId}));
+    }
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <AddItem addItemHandler={addNewTodolist} placeholder={'add new todolist...'}/>
+      <div className={'todolists_wrapper'}>
+          {todolists.map((todolist, index) => <Todolist key={index} todo={todolist}/>)}
+      </div>
     </div>
   );
 }

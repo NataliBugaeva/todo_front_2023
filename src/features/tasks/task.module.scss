@@ -1,0 +1,18 @@
+.task_wrapper {
+  border: 1px solid green;
+  display: flex;
+  width: 90%;
+  margin: 0 auto 5px;
+  align-items: center;
+}
+
+.task_input {
+  cursor: pointer;
+}
+
+.task_title {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 16px;
+}
+

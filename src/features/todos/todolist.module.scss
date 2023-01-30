@@ -1,0 +1,12 @@
+.todolist {
+  width: 300px;
+  min-width: 250px;
+  min-height: 300px;
+  border: 1px solid red;
+  margin: 20px;
+
+  &_title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
