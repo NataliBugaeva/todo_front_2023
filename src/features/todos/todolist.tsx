@@ -1,9 +1,10 @@
 import React from "react";
 import style from './todolist.module.scss';
 import AddItem from "../addItem/addItem";
-import {TodoItemType, removeTodolist as removeTodolistFromTodoSlice, changeTodoTitle} from "./todoSlice";
+//import {TodoItemType, removeTodolist as removeTodolistFromTodoSlice, changeTodoTitle} from "./todoSlice";
+import {TodoItemType} from "./todoSlice";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import { addTask, removeTodolist as removeTodolistFromTaskSlice } from "../tasks/tasksSlice";
+//import { addTask, removeTodolist as removeTodolistFromTaskSlice } from "../tasks/tasksSlice";
 import Task from "../tasks/task";
 import CustomButton from "../customButton/customButton";
 import EditableSpan from "../editableSpan/editableSpan";
@@ -18,16 +19,16 @@ const Todolist: React.FC<TodolistPropsType> = ({todo}) => {
     const todoTasks = useAppSelector(state => state.tasks.tasks[todo.id]);
 
     const addNewTask = (title: string) => {
-        dispatch(addTask({todoId: todo.id, title}))
+       // dispatch(addTask({todoId: todo.id, title}))
     }
 
     const removeTodolist = () => {
-        dispatch(removeTodolistFromTodoSlice({todoId: todo.id}));
-        dispatch(removeTodolistFromTaskSlice({todoId: todo.id}));
+        // dispatch(removeTodolistFromTodoSlice({todoId: todo.id}));
+        // dispatch(removeTodolistFromTaskSlice({todoId: todo.id}));
     }
 
     const onChangeTodolistTitle = (title: string) => {
-        dispatch(changeTodoTitle({todoId: todo.id, todoTitle: title}))
+        // dispatch(changeTodoTitle({todoId: todo.id, todoTitle: title}))
     }
 
     return(
@@ -40,7 +41,7 @@ const Todolist: React.FC<TodolistPropsType> = ({todo}) => {
                 <AddItem addItemHandler={addNewTask} placeholder={'add new task...'}/>
             </div>
             <ul>
-                {todoTasks.map((task, index)=> <Task key={index} task={task} todoId={todo.id}/>)}
+                {todoTasks?.map((task, index)=> <Task key={index} task={task} todoId={todo.id}/>)}
             </ul>
 
         </div>
