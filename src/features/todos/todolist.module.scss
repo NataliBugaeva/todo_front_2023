@@ -1,4 +1,6 @@
 .todolist {
+  display: flex;
+  flex-direction: column;
   width: 300px;
   min-width: 250px;
   min-height: 300px;
@@ -9,4 +11,23 @@
     font-size: 20px;
     font-weight: bold;
   }
+
+  &_filter_buttons {
+    border: 1px solid blue;
+    display: flex;
+    justify-content: space-around;
+
+    &>div {
+      cursor: pointer;
+      border: 1px solid green;
+      width: 70px;
+      padding: 3px 0;
+      border-radius: 5px;
+    }
+  }
+
+  ul {
+    flex-grow: 1;
+  }
 }
+

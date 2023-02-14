@@ -1,6 +1,7 @@
 import type {Reducer} from '@reduxjs/toolkit';
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {v1} from "uuid";
+import {instance} from "../todos/todoSlice";
 
 
 export type TaskType = {
@@ -19,13 +20,29 @@ const initialState: TasksInitialStateType = {
     tasks: {}
 };
 
+//удаление всех тасок при удалении тудулиста
+// export const deleteAllTasksFromTodo = createAsyncThunk(
+//     "tasks/deleteAllTasksFromTodolist",
+//     async (todoId: number, thunkAPI) => {
+//         try {
+//             instance.delete(`api/tasks/deleteAll/${todoId}`).then(res => {
+//
+//             })
+//         }catch (error: any) {
+//             console.log(error)
+//             return thunkAPI.rejectWithValue({ error: error.message });
+//         }
+//     }
+// )
+
+
 const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        // addNewTodolist(state, action: PayloadAction<{ todoId: string }>) {
-        //     state.tasks[action.payload.todoId] = [];
-        // },
+        addNewTodolist(state, action: PayloadAction<{ todoId: number }>) {
+            state.tasks[action.payload.todoId] = [];
+        },
         // addTask(state, action: PayloadAction<{ todoId: string, title: string }>) {
         //     state.tasks[action.payload.todoId].unshift({id: v1(), title: action.payload.title, completed: false})
         // },
@@ -44,13 +61,13 @@ const tasksSlice = createSlice({
         // deleteTask(state, action: PayloadAction<{ todoId: string, taskId: string }>) {
         //     state.tasks[action.payload.todoId] = state.tasks[action.payload.todoId].filter(task => task.id !== action.payload.taskId)
         // },
-        // removeTodolist(state, action: PayloadAction<{ todoId: string }>) {
-        //     delete state.tasks[action.payload.todoId];
-        // }
+        removeAllTasksFromTodolist(state, action: PayloadAction<{ todoId: number }>) {
+            delete state.tasks[action.payload.todoId];
+        }
     }
 })
 
-//export const {addNewTodolist, addTask, setTaskStatus, deleteTask, removeTodolist, changeTaskTitle} = tasksSlice.actions;
+export const {addNewTodolist, removeAllTasksFromTodolist} = tasksSlice.actions;
 export default tasksSlice.reducer;
 
 // declare const reducer: Reducer<{}>;

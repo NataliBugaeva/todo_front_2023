@@ -1,8 +1,10 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {v1} from "uuid";
 import axios from "axios";
+import {useAppDispatch} from "../../app/hooks";
+import {addNewTodolist, removeAllTasksFromTodolist } from "../tasks/tasksSlice";
 
-let instance = axios.create({
+export let instance = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
 });
 
@@ -22,7 +24,7 @@ export const getHeader = () => {
 export type TodolistFilterType = 'all' | 'completed' | 'new';
 //тип обьекта тудулиста
 export type TodoItemType = {
-    id: string,
+    todo_id: number,
     title: string,
     filter: TodolistFilterType
 }
@@ -43,10 +45,10 @@ const initialState: TodolistInitialStateType = {
 //полученик всех тудулистов
 export const getAllTodolists = createAsyncThunk(
     "todolists/getTodolists", async (_, thunkAPI) => {
-       // debugger
         try {
             const response = await instance.get(`api/todolists`);//where you want to fetch data
-            return  response.data.todos.map((t: any) => ({ id: t._id, title: t.title, filter: t.filter}));
+            response.data?.todos.forEach((t: TodoItemType) => thunkAPI.dispatch(addNewTodolist({todoId: t.todo_id})))
+            return  response.data.todos;
         } catch (error: any) {
             return thunkAPI.rejectWithValue({ error: error.message });
         }
@@ -56,17 +58,48 @@ export const getAllTodolists = createAsyncThunk(
 export const addTodo = createAsyncThunk(
     "todolists/addTodolist",
     async (title: string, thunkAPI) => {
-debugger
         try {
-            const response =  instance.post(`api/todolists`, {title: title, filter: 'all'}, getHeader());//where you want to fetch data
-          debugger
-            //  return  response.data.todos.map((t: any) => ({ id: t._id, title: t.title, filter: t.filter}));
-           // return response.data.todos
+            const response =  await instance.post(`api/todolists`, {title: title, filter: 'all'});//where you want to fetch data
+            thunkAPI.dispatch(addNewTodolist({todoId:response.data.todos[0].todo_id}))
+            return response.data.todos[0]
         } catch (error: any) {
             console.log(error)
             return thunkAPI.rejectWithValue({ error: error.message });
         }
     });
+
+//удаление тудулиста
+export const deleteTodo = createAsyncThunk(
+
+    "todolists/deleteTodolist",
+    async (todoId: number, thunkAPI) => {
+        try {
+            const response =  await instance.delete(`api/todolists/${todoId}`);
+                thunkAPI.dispatch(removeAllTasksFromTodolist({todoId: +response.data.todoId}))
+                return response.data.todoId;
+        }catch (error: any) {
+            console.log(error)
+            return  thunkAPI.rejectWithValue({ error: error.message });
+        }
+    }
+)
+
+//изменение наименования тудулиста
+export const updateTodo = createAsyncThunk(
+
+    "todolists/updateTodolist",
+    async (body: {todo_id: number, title: string, filter: TodolistFilterType}, thunkAPI) => {
+        try {
+            const response = await instance.put(`api/todolists/${body.todo_id}`, {title: body.title, filter: body.filter});
+            return response.data;
+        }catch (error: any) {
+            console.log(error)
+            return  thunkAPI.rejectWithValue({ error: error.message });
+        }
+    }
+)
+
+
 
 const todolistSlice = createSlice({
     name: 'todos',
@@ -93,7 +126,7 @@ const todolistSlice = createSlice({
         builder.addCase(getAllTodolists.fulfilled, (state, {payload}) => {
             state.loading = false;
             state.todos = payload;
-            debugger
+
         });
         builder.addCase(getAllTodolists.rejected, (state, action) => {
             state.loading = false;
@@ -102,15 +135,42 @@ const todolistSlice = createSlice({
         });
 
         builder.addCase(addTodo.pending, (state) => {
-            state.loading = true
+          //  state.loading = true
         });
         builder.addCase(addTodo.fulfilled, (state, {payload}) => {
-            state.loading = false;
-            // state.todos = payload;
-            debugger
+           //  state.loading = false;
+            state.todos.unshift(payload);
+
         });
         builder.addCase(addTodo.rejected, (state, action) => {
-            state.loading = false;
+           // state.loading = false;
+            state.error = action.error.message || null;
+        });
+
+        builder.addCase(deleteTodo.pending, (state) => {
+           // state.loading = true
+        });
+        builder.addCase(deleteTodo.fulfilled, (state, {payload}) => {
+           // state.loading = false;
+            state.todos = state.todos.filter(t => t.todo_id !== +payload);
+        });
+        builder.addCase(deleteTodo.rejected, (state, action) => {
+           // state.loading = false;
+            state.error = action.error.message || null;
+        });
+
+        builder.addCase(updateTodo.pending, (state) => {
+          //  state.loading = true
+        });
+        builder.addCase(updateTodo.fulfilled, (state, {payload}) => {
+         //   state.loading = false;
+            if(payload.todo_id) {
+            state.todos = state.todos.map(t => t.todo_id === +payload.todo_id ? {...payload} : t);
+            }
+
+        });
+        builder.addCase(updateTodo.rejected, (state, action) => {
+          //  state.loading = false;
             state.error = action.error.message || null;
         });
     }

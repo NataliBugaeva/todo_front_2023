@@ -17,4 +17,10 @@ ul {
   flex-wrap: wrap;
 }
 
+.active_button {
+  background-color: aquamarine;
+  opacity: .7;
+  font-weight: bold;
+}
+
 

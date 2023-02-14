@@ -8,7 +8,7 @@ import EditableSpan from "../editableSpan/editableSpan";
 
 export type TaskPropsType = {
     task: TaskType,
-    todoId: string,
+    todoId: number,
 }
 
 const Task: React.FC<TaskPropsType> = ({task, todoId}) => {
