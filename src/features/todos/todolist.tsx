@@ -4,7 +4,7 @@ import AddItem from "../addItem/addItem";
 //import {TodoItemType, removeTodolist as removeTodolistFromTodoSlice, changeTodoTitle} from "./todoSlice";
 import {deleteTodo, TodoItemType, TodolistFilterType, updateTodo} from "./todoSlice";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-//import { addTask, removeTodolist as removeTodolistFromTaskSlice } from "../tasks/tasksSlice";
+import { addTask } from "../tasks/tasksSlice";
 import Task from "../tasks/task";
 import CustomButton from "../customButton/customButton";
 import EditableSpan from "../editableSpan/editableSpan";
@@ -16,10 +16,11 @@ export type TodolistPropsType = {
 const Todolist: React.FC<TodolistPropsType> = ({todo}) => {
 
     const dispatch = useAppDispatch();
-    const todoTasks = useAppSelector(state => state.tasks.tasks[todo.todo_id]);
+   let allTasks = useAppSelector(state => state.tasks.tasks)
+    const todoTasks = allTasks.filter(t => t.todo_id === todo.todo_id);
 
     const addNewTask = (title: string) => {
-       // dispatch(addTask({todoId: todo.id, title}))
+        dispatch(addTask({title, status: false, todo_id: todo.todo_id}))
     }
 
     const removeTodolist = (todoId: number) => {
@@ -59,3 +60,4 @@ const Todolist: React.FC<TodolistPropsType> = ({todo}) => {
 }
 
 export default Todolist;
+

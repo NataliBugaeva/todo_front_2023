@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {v1} from "uuid";
 import axios from "axios";
 import {useAppDispatch} from "../../app/hooks";
-import {addNewTodolist, removeAllTasksFromTodolist } from "../tasks/tasksSlice";
+import {getAllTasks, removeAllTasksFromTodolist} from "../tasks/tasksSlice";
 
 export let instance = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
@@ -46,8 +46,9 @@ const initialState: TodolistInitialStateType = {
 export const getAllTodolists = createAsyncThunk(
     "todolists/getTodolists", async (_, thunkAPI) => {
         try {
+            thunkAPI.dispatch(getAllTasks());
             const response = await instance.get(`api/todolists`);//where you want to fetch data
-            response.data?.todos.forEach((t: TodoItemType) => thunkAPI.dispatch(addNewTodolist({todoId: t.todo_id})))
+           // response.data?.todos.forEach((t: TodoItemType) => thunkAPI.dispatch(addNewTodolist({todoId: t.todo_id})))
             return  response.data.todos;
         } catch (error: any) {
             return thunkAPI.rejectWithValue({ error: error.message });
@@ -60,7 +61,7 @@ export const addTodo = createAsyncThunk(
     async (title: string, thunkAPI) => {
         try {
             const response =  await instance.post(`api/todolists`, {title: title, filter: 'all'});//where you want to fetch data
-            thunkAPI.dispatch(addNewTodolist({todoId:response.data.todos[0].todo_id}))
+            //thunkAPI.dispatch(addNewTodolist({todoId:response.data.todos[0].todo_id}))
             return response.data.todos[0]
         } catch (error: any) {
             console.log(error)
