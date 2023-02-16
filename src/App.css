@@ -3,7 +3,12 @@
 }
 
 .App {
+  min-width: 100%;
+  min-height: 100vh;
   text-align: center;
+  border: 2px solid red;
+  display: flex;
+  flex-direction: column;
 }
 
 ul {
@@ -15,12 +20,22 @@ ul {
   border: 1px solid green;
   display: flex;
   flex-wrap: wrap;
+  flex-grow: 1;
 }
 
 .active_button {
   background-color: aquamarine;
   opacity: .7;
   font-weight: bold;
+}
+
+.footer {
+  border: 2px solid blue;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 30px;
 }
 
 

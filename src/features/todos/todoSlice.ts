@@ -61,6 +61,7 @@ export const addTodo = createAsyncThunk(
     async (title: string, thunkAPI) => {
         try {
             const response =  await instance.post(`api/todolists`, {title: title, filter: 'all'});//where you want to fetch data
+            debugger
             //thunkAPI.dispatch(addNewTodolist({todoId:response.data.todos[0].todo_id}))
             return response.data.todos[0]
         } catch (error: any) {
@@ -140,6 +141,7 @@ const todolistSlice = createSlice({
         });
         builder.addCase(addTodo.fulfilled, (state, {payload}) => {
            //  state.loading = false;
+            debugger
             state.todos.unshift(payload);
 
         });

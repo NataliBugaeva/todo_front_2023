@@ -38,7 +38,8 @@ const Todolist: React.FC<TodolistPropsType> = ({todo}) => {
     return(
         <div className={style.todolist}>
             {/*здесь эдитабл спан нужен*/}
-            <div><EditableSpan actionButtonHandler={() => removeTodolist(todo.todo_id)} title={todo.title}
+            <div>
+                <EditableSpan actionButtonHandler={() => removeTodolist(todo.todo_id)} title={todo.title}
                              changeTitleHandler={onChangeTodolistTitle}/>
                 {/*<span className={style.todolist_title}>{todo.title}</span>*/}
                 {/*<CustomButton buttonHandler={removeTodolist} title={'x'}/>*/}

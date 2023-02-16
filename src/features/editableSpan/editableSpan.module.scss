@@ -1,0 +1,16 @@
+.editable_span_wrapper {
+  border: 1px solid green;
+}
+
+
+
+.editable_span_title_wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.task_title {
+  max-width: 80%;
+  word-wrap: break-word;
+  padding: 10px 5px;
+}
