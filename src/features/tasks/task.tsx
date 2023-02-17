@@ -1,9 +1,7 @@
 import React from "react";
 import style from './task.module.scss';
-// import {TaskType, deleteTask, setTaskStatus, changeTaskTitle} from "./tasksSlice";
 import {deleteTask, TaskType, updateTask} from "./tasksSlice";
 import {useAppDispatch} from "../../app/hooks";
-import CustomButton from "../customButton/customButton";
 import EditableSpan from "../editableSpan/editableSpan";
 
 export type TaskPropsType = {

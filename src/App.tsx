@@ -25,7 +25,7 @@ function App() {
                 <div className="App">
                     <div style={{margin: '20px 0'}}><AddItem addItemHandler={addNewTodolist} placeholder={'add new todolist...'}/></div>
                     <div className={'todolists_wrapper'}>
-                        {todos?.map((todolist, index) => <Todolist key={index} todo={todolist}/>)}
+                        <div>{todos?.map((todolist, index) => <Todolist key={index} todo={todolist}/>)}</div>
                     </div>
                     <div className={'footer'}>
                         <span>&#169; {new Date().getFullYear()} N.Bugaeva</span>

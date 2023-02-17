@@ -17,11 +17,12 @@ const AddItem: React.FC<AddItemPropsType> = ({placeholder, addItemHandler}) => {
 
     const [title, changeTitle] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
-    console.log(error);
+   // console.log(error);
 
     const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         error && setError(false);
         let newTitle = e.currentTarget.value;
+        console.log(newTitle)
         newTitle.length <= 63 ? changeTitle(newTitle) : setError(true);
     }
 
@@ -57,7 +58,7 @@ const AddItem: React.FC<AddItemPropsType> = ({placeholder, addItemHandler}) => {
             {/*       onKeyPress={onEnterPress}*/}
             {/*/>*/}
         <TextField error={error}
-                                 label={error ?"Error" : placeholder}
+                                 label={error ? "Error" : placeholder}
                                  size={'small'}
                                  variant="outlined"
                                  value={title}

@@ -1,7 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {v1} from "uuid";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {useAppDispatch} from "../../app/hooks";
 import {getAllTasks, removeAllTasksFromTodolist} from "../tasks/tasksSlice";
 
 export let instance = axios.create({
@@ -61,11 +59,10 @@ export const addTodo = createAsyncThunk(
     async (title: string, thunkAPI) => {
         try {
             const response =  await instance.post(`api/todolists`, {title: title, filter: 'all'});//where you want to fetch data
-            debugger
             //thunkAPI.dispatch(addNewTodolist({todoId:response.data.todos[0].todo_id}))
             return response.data.todos[0]
         } catch (error: any) {
-            console.log(error)
+          //  console.log(error)
             return thunkAPI.rejectWithValue({ error: error.message });
         }
     });
@@ -80,7 +77,7 @@ export const deleteTodo = createAsyncThunk(
                 thunkAPI.dispatch(removeAllTasksFromTodolist({todoId: +response.data.todoId}))
                 return response.data.todoId;
         }catch (error: any) {
-            console.log(error)
+           // console.log(error)
             return  thunkAPI.rejectWithValue({ error: error.message });
         }
     }
@@ -95,7 +92,7 @@ export const updateTodo = createAsyncThunk(
             const response = await instance.put(`api/todolists/${body.todo_id}`, {title: body.title, filter: body.filter});
             return response.data;
         }catch (error: any) {
-            console.log(error)
+         //   console.log(error)
             return  thunkAPI.rejectWithValue({ error: error.message });
         }
     }
@@ -140,9 +137,7 @@ const todolistSlice = createSlice({
           //  state.loading = true
         });
         builder.addCase(addTodo.fulfilled, (state, {payload}) => {
-           //  state.loading = false;
-            debugger
-            state.todos.unshift(payload);
+           state.todos = [...state.todos, payload];
 
         });
         builder.addCase(addTodo.rejected, (state, action) => {

@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useState} from "react";
 import style from './editableSpan.module.scss';
-import CustomButton from "../customButton/customButton";
 import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@mui/icons-material/Clear';

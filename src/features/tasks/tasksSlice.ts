@@ -1,7 +1,5 @@
-import type {Reducer} from '@reduxjs/toolkit';
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {v1} from "uuid";
-import {getAllTodolists, instance} from "../todos/todoSlice";
+import {instance} from "../todos/todoSlice";
 
 
 export type TaskType = {

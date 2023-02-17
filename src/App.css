@@ -18,10 +18,13 @@ ul {
 
 .todolists_wrapper {
   border: 1px solid green;
-  display: flex;
-  flex-wrap: wrap;
   flex-grow: 1;
 }
+
+.todolists_wrapper>div {
+   display: flex;
+   flex-wrap: wrap;
+ }
 
 .active_button {
   background-color: aquamarine;

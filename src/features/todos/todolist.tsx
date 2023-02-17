@@ -1,12 +1,10 @@
 import React from "react";
 import style from './todolist.module.scss';
 import AddItem from "../addItem/addItem";
-//import {TodoItemType, removeTodolist as removeTodolistFromTodoSlice, changeTodoTitle} from "./todoSlice";
 import {deleteTodo, TodoItemType, TodolistFilterType, updateTodo} from "./todoSlice";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import { addTask } from "../tasks/tasksSlice";
 import Task from "../tasks/task";
-import CustomButton from "../customButton/customButton";
 import EditableSpan from "../editableSpan/editableSpan";
 
 export type TodolistPropsType = {
