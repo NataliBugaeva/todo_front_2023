@@ -1,18 +1,17 @@
+@import './../../assets/styles/helpers';
+@import './../../assets/styles/mixins';
+
 .task_wrapper {
-  border: 1px solid green;
   display: flex;
   width: 90%;
   margin: 0 auto 5px;
   align-items: center;
+  color: $dark-grey;
+  @include font(500, center, Montserrat-SemiBold, 1.2rem, 1.2rem);
 }
 
 .task_input {
   cursor: pointer;
 }
 
-.task_title {
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 16px;
-}
 

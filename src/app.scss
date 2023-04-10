@@ -1,0 +1,60 @@
+@import './assets/styles/helpers';
+@import './assets/styles/mixins';
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  @include font(400, end, Montserrat-Regular, 16px, 20px);
+}
+
+.App {
+  min-width: 100%;
+  min-height: 100vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.error_block {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include font(600, end, Montserrat-Regular, 1.5rem, 1.7rem);
+  color: $red;
+}
+
+.todolists_wrapper {
+  flex-grow: 1;
+}
+
+.todolists_wrapper > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.active_button {
+  background-color: $active-button;
+  color: $white;
+  font-weight: bold;
+}
+
+.footer {
+  background-color: $blue;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 30px;
+  @include font(500, end, Montserrat-SemiBold, 1.2rem, 1.2rem);
+}
+
+

@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useCallback} from "react";
 import style from './todolist.module.scss';
 import AddItem from "../addItem/addItem";
 import {deleteTodo, TodoItemType, TodolistFilterType, updateTodo} from "./todoSlice";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import { addTask } from "../tasks/tasksSlice";
+import {addTask} from "../tasks/tasksSlice";
 import Task from "../tasks/task";
 import EditableSpan from "../editableSpan/editableSpan";
 
@@ -14,46 +14,60 @@ export type TodolistPropsType = {
 const Todolist: React.FC<TodolistPropsType> = ({todo}) => {
 
     const dispatch = useAppDispatch();
-   let allTasks = useAppSelector(state => state.tasks.tasks)
+    let allTasks = useAppSelector(state => state.tasks.tasks)
     const todoTasks = allTasks.filter(t => t.todo_id === todo.todo_id);
 
-    const addNewTask = (title: string) => {
+    const addNewTask = useCallback((title: string) => {
         dispatch(addTask({title, status: false, todo_id: todo.todo_id}))
-    }
+    }, [todo.todo_id])
 
-    const removeTodolist = (todoId: number) => {
-        dispatch(deleteTodo(todoId))
-    }
+    const removeTodolist = useCallback(() => {
+        dispatch(deleteTodo(todo.todo_id))
+    }, [todo.todo_id])
 
-    const onChangeTodolistTitle = (title: string) => {
+    const onChangeTodolistTitle = useCallback((title: string) => {
         dispatch(updateTodo({todo_id: todo.todo_id, title, filter: todo.filter}))
-    }
+    }, [todo.filter, todo.todo_id])
 
     const onChangeTodolistFilter = (filter: TodolistFilterType) => {
         dispatch(updateTodo({todo_id: todo.todo_id, title: todo.title, filter}))
     }
 
-    return(
+    return (
         <div className={style.todolist}>
-            {/*здесь эдитабл спан нужен*/}
-            <div>
-                <EditableSpan actionButtonHandler={() => removeTodolist(todo.todo_id)} title={todo.title}
-                             changeTitleHandler={onChangeTodolistTitle}/>
-                {/*<span className={style.todolist_title}>{todo.title}</span>*/}
-                {/*<CustomButton buttonHandler={removeTodolist} title={'x'}/>*/}
+            <div className={style.todolist_title}>
+                <div>
+                    <EditableSpan actionButtonHandler={removeTodolist} title={todo.title}
+                                 changeTitleHandler={onChangeTodolistTitle}/>
+                </div>
                 <div style={{margin: '10px 0'}}>
                     <AddItem addItemHandler={addNewTask} placeholder={'add new task...'}/>
                 </div>
             </div>
             <ul>
-                {todoTasks?.map((task, index)=> <Task key={index} task={task} todoId={todo.todo_id}/>)}
+                {
+                    todo.filter === 'new' ?
+                        todoTasks?.filter((task, index) => !task.status).map((task, index) => <Task key={index}
+                                                                                                    task={task}
+                                                                                                    todoId={todo.todo_id}/>)
+                        : todo.filter === 'completed' ?
+                        todoTasks?.filter((task, index) => task.status).map((task, index) => <Task key={index}
+                                                                                                   task={task}
+                                                                                                   todoId={todo.todo_id}/>)
+                        : todoTasks?.map((task, index) => <Task key={index} task={task} todoId={todo.todo_id}/>)
+                }
             </ul>
             <div className={style.todolist_filter_buttons}>
-                <div className={todo.filter === 'all' ? 'active_button' : ''} onClick={() => onChangeTodolistFilter('all')}>All</div>
-                <div className={todo.filter === 'new' ? 'active_button' : ''} onClick={() => onChangeTodolistFilter('new')}>New</div>
-                <div className={todo.filter === 'completed' ? 'active_button' : ''} onClick={() => onChangeTodolistFilter('completed')}>Done</div>
+                <div className={todo.filter === 'all' ? 'active_button' : ''}
+                     onClick={() => onChangeTodolistFilter('all')}>All
+                </div>
+                <div className={todo.filter === 'new' ? 'active_button' : ''}
+                     onClick={() => onChangeTodolistFilter('new')}>New
+                </div>
+                <div className={todo.filter === 'completed' ? 'active_button' : ''}
+                     onClick={() => onChangeTodolistFilter('completed')}>Done
+                </div>
             </div>
-
         </div>
     )
 }
