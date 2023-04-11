@@ -116,11 +116,14 @@ const todolistSlice = createSlice({
         });
 
         builder.addCase(deleteTodo.pending, (state) => {
+            state.loading = true;
         });
         builder.addCase(deleteTodo.fulfilled, (state, {payload}) => {
+            state.loading = false;
             state.todos = state.todos.filter(t => t.todo_id !== +payload)
         });
         builder.addCase(deleteTodo.rejected, (state, action) => {
+            state.loading = false;
             state.error = action.error.message || null;
         });
 
